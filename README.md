@@ -57,7 +57,7 @@ Buka file `.env` dan sesuaikan konfigurasi database:
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=rt_admin
+DB_DATABASE=beon_rt_admin
 DB_USERNAME=root
 DB_PASSWORD=
 ```
@@ -96,15 +96,8 @@ php artisan storage:link
 
 > Diperlukan agar foto KTP penghuni bisa diakses via URL publik.
 
-### 9. Konfigurasi CORS
 
-Buka file `config/cors.php` dan pastikan origin frontend diizinkan:
-
-```php
-'allowed_origins' => ['http://localhost:5173'],
-```
-
-### 10. Jalankan Server
+### 9. Jalankan Server
 
 ```bash
 php artisan serve
