@@ -1,59 +1,235 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Backend RT Admin — Laravel
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+REST API untuk aplikasi administrasi RT, dibangun dengan Laravel 11.
 
-## About Laravel
+> Repository frontend tersedia di: https://github.com/achmadfikrihdytllh/Frontend-RT-Admin
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Tech Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+| Layer | Teknologi |
+|---|---|
+| Framework | Laravel 11 |
+| Bahasa | PHP 8.2+ |
+| Database | MySQL 8.0+ |
+| API | RESTful JSON |
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Prasyarat
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Pastikan perangkat kamu sudah terinstal:
 
-## Laravel Sponsors
+- PHP >= 8.2
+- Composer >= 2.x
+- MySQL >= 8.0
+- Git
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## Instalasi
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 1. Clone Repository
 
-## Contributing
+```bash
+git clone https://github.com/achmadfikrihdytllh/Backend-RT-Admin.git
+cd Backend-RT-Admin
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 2. Install Dependency PHP
 
-## Code of Conduct
+```bash
+composer install
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 3. Salin File Environment
 
-## Security Vulnerabilities
+```bash
+cp .env.example .env
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 4. Konfigurasi Database
 
-## License
+Buka file `.env` dan sesuaikan konfigurasi database:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=rt_admin
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+Buat database `rt_admin` di MySQL terlebih dahulu:
+
+```sql
+CREATE DATABASE rt_admin;
+```
+
+### 5. Generate Application Key
+
+```bash
+php artisan key:generate
+```
+
+### 6. Jalankan Migrasi Database
+
+```bash
+php artisan migrate
+```
+
+### 7. Jalankan Seeder (Data Awal)
+
+```bash
+php artisan db:seed
+```
+
+> Seeder akan mengisi data awal kategori iuran: **Satpam (Rp 100.000)** dan **Kebersihan (Rp 15.000)**.
+
+### 8. Buat Symbolic Link Storage
+
+```bash
+php artisan storage:link
+```
+
+> Diperlukan agar foto KTP penghuni bisa diakses via URL publik.
+
+### 9. Konfigurasi CORS
+
+Buka file `config/cors.php` dan pastikan origin frontend diizinkan:
+
+```php
+'allowed_origins' => ['http://localhost:5173'],
+```
+
+### 10. Jalankan Server
+
+```bash
+php artisan serve
+```
+
+Backend akan berjalan di: `http://127.0.0.1:8000`
+
+---
+
+## Verifikasi Instalasi
+
+Buka browser atau gunakan tool seperti curl untuk mengakses:
+
+```
+http://127.0.0.1:8000/api/ping
+```
+
+Response yang diharapkan:
+
+```json
+{
+  "success": true,
+  "message": "API Backend RT Admin berjalan dengan lancar!"
+}
+```
+
+---
+
+## Daftar Endpoint API
+
+### Penghuni
+| Method | Endpoint | Keterangan |
+|---|---|---|
+| GET | `/api/residents` | Daftar semua penghuni |
+| POST | `/api/residents` | Tambah penghuni baru |
+| GET | `/api/residents/{id}` | Detail penghuni |
+| PUT | `/api/residents/{id}` | Update penghuni |
+| DELETE | `/api/residents/{id}` | Hapus penghuni |
+
+### Rumah
+| Method | Endpoint | Keterangan |
+|---|---|---|
+| GET | `/api/houses` | Daftar semua rumah |
+| POST | `/api/houses` | Tambah rumah baru |
+| GET | `/api/houses/{id}` | Detail rumah beserta history |
+| PUT | `/api/houses/{id}` | Update kode rumah |
+| DELETE | `/api/houses/{id}` | Hapus rumah |
+| POST | `/api/houses/{id}/assign` | Assign penghuni ke rumah |
+| POST | `/api/houses/{id}/unassign` | Keluarkan penghuni dari rumah |
+
+### Pembayaran
+| Method | Endpoint | Keterangan |
+|---|---|---|
+| GET | `/api/payments` | Daftar semua tagihan |
+| POST | `/api/payments` | Catat pembayaran manual |
+| GET | `/api/payments/{id}` | Detail tagihan |
+| PATCH | `/api/payments/{id}/pay` | Lunasi tagihan |
+| PUT | `/api/payments/{id}` | Update tagihan |
+| DELETE | `/api/payments/{id}` | Hapus tagihan |
+| POST | `/api/payments/generate-monthly` | Generate tagihan bulanan otomatis |
+| GET | `/api/payments/outstanding` | Daftar tagihan belum lunas |
+
+### Pengeluaran
+| Method | Endpoint | Keterangan |
+|---|---|---|
+| GET | `/api/expenses` | Daftar semua pengeluaran |
+| POST | `/api/expenses` | Tambah pengeluaran |
+| GET | `/api/expenses/{id}` | Detail pengeluaran |
+| PUT | `/api/expenses/{id}` | Update pengeluaran |
+| DELETE | `/api/expenses/{id}` | Hapus pengeluaran |
+
+### Kategori Iuran
+| Method | Endpoint | Keterangan |
+|---|---|---|
+| GET | `/api/fee-categories` | Daftar kategori iuran |
+| POST | `/api/fee-categories` | Tambah kategori iuran |
+
+### Laporan
+| Method | Endpoint | Keterangan |
+|---|---|---|
+| GET | `/api/reports/dashboard` | Summary dashboard bulanan |
+| GET | `/api/reports/summary` | Grafik pemasukan & pengeluaran tahunan |
+| GET | `/api/reports/detail` | Detail laporan per bulan |
+| GET | `/api/reports/outstanding-summary` | Ringkasan tunggakan |
+| GET | `/api/reports/dashboard/export` | Export dashboard ke CSV |
+| GET | `/api/reports/detail/export` | Export detail laporan ke CSV |
+| GET | `/api/reports/outstanding-summary/export` | Export tunggakan ke CSV |
+
+---
+
+## Troubleshooting
+
+### Error saat `composer install`
+Pastikan versi PHP sudah >= 8.2:
+```bash
+php -v
+```
+
+### Error migrasi
+Pastikan database sudah dibuat dan konfigurasi `.env` sudah benar. Untuk reset total:
+```bash
+php artisan migrate:fresh --seed
+```
+> **Perhatian:** Perintah ini menghapus semua data. Gunakan hanya saat setup awal.
+
+### Foto KTP tidak bisa diakses
+Jalankan ulang:
+```bash
+php artisan storage:link
+```
+
+### CORS Error dari frontend
+Pastikan `config/cors.php` sudah menambahkan `http://localhost:5173` di `allowed_origins`, lalu restart server:
+```bash
+php artisan serve
+```
+
+### Port 8000 sudah digunakan
+```bash
+php artisan serve --port=8001
+```
+Lalu sesuaikan `baseURL` di `src/api.js` frontend.
+
+---
+
+## Lisensi
+
+Project ini dibuat untuk keperluan administrasi RT. Hak cipta © 2026.

@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
         for ($i = 1; $i <= 20; $i++) {
             House::create([
                 'house_code' => 'Blok A-' . $i,
-                'status' => 'tidak dihuni' // Kita set 'tidak dihuni' dulu, nanti kita assign penghuninya via API
+                'status' => 'tidak dihuni' 
             ]);
         }
     }
